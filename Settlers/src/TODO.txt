@@ -1,7 +1,7 @@
 TODO:
 
-Robert:
+Robert: Superclass, Graph, etc
+ 
+Atalie: GUI Work
 
-Atalie:
-
-Mason:
+Mason: Message Handler, Play Class
