@@ -21,6 +21,7 @@ public class Graph {
 	}
 	
 	private void makeTiles() {
+		// These lists serve to randomize the tile values.
 		LinkedList<Integer> tileTypes = buildTileTypes();
 		LinkedList<Integer> rollValues = buildRollValues();
 		LinkedList<Integer> portTypes = buildPortTypes();
@@ -205,7 +206,7 @@ public class Graph {
 			builds.get(0).get(i).addBuildNeighbor(builds.get(0).get((i+5)%6));
 			builds.get(0).get(i).addBuildNeighbor(builds.get(0).get((i+7)%6));
 			// 1st line Builds
-			builds.get(0).get(i).addBuildNeighbor(builds.get(0).get(firstLineBuildCount));
+			builds.get(0).get(i).addBuildNeighbor(builds.get(1).get(firstLineBuildCount));
 			firstLineBuildCount+=3;
 			
 			// 0th line Roads
@@ -269,7 +270,7 @@ public class Graph {
 			builds.get(1).get(i).addRoadNeighbor(roads.get(2).get((i+17)%18));
 			// 3rd line Roads
 			if (i%3!=0) {
-				builds.get(1).get(i).addRoadNeighbor(roads.get(2).get(thirdLineRoadCount++));
+				builds.get(1).get(i).addRoadNeighbor(roads.get(3).get(thirdLineRoadCount++));
 			}
 		}
 		
@@ -374,11 +375,28 @@ public class Graph {
 			// 2nd line Builds
 			if (i%2 == 0) {
 				roads.get(3).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
+				secondLineBuildCount+=3;
 				roads.get(3).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
+				secondLineBuildCount+=2;
 			}
 		}
 		
 		// 4th line Roads
+		secondLineTileCount = 0;
+		for (int i = 0; i < 30; i++) {
+			// 2nd line Tiles
+			if (i%5==0) {
+				roads.get(4).get((i+29)%30).addTileNeighbor(tiles.get(2).get(secondLineTileCount));
+				roads.get(4).get((i+30)%30).addTileNeighbor(tiles.get(2).get(secondLineTileCount));
+				roads.get(4).get((i+31)%30).addTileNeighbor(tiles.get(2).get(secondLineTileCount++));
+				roads.get(4).get((i+32)%30).addTileNeighbor(tiles.get(2).get(secondLineTileCount));
+				roads.get(4).get((i+33)%30).addTileNeighbor(tiles.get(2).get(secondLineTileCount++));
+			}
+				
+			// 2nd line Builds
+			roads.get(4).get(i).addBuildNeighbor(builds.get(2).get((i+31)%30));
+			roads.get(4).get(i).addBuildNeighbor(builds.get(2).get((i+32)%30));
+		}
 		
 	}
 	
