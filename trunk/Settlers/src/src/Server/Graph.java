@@ -82,6 +82,7 @@ public class Graph {
 		}
 	}
 	
+	// Iterates over every tile node and adds pointers to the appropriate nodes.
 	private void linkTiles() {
 		
 		// 0th line of tiles...
@@ -188,6 +189,7 @@ public class Graph {
 		
 	}
 	
+	// Iterates over every build node and adds pointers to the appropriate nodes.
 	private void linkBuilds() {
 		
 		// 0th line Builds
@@ -214,19 +216,170 @@ public class Graph {
 		}
 		
 		// 1st line Builds
+		int firstLineTileCount = -1;
+		int secondLineTileCount = -1;
+		int zerothLineBuildCount = 0;
+		firstLineBuildCount = 0;
+		boolean buildFlip = true;
+		int secondLineBuildCount = 1;
+		int firstLineRoadCount = 0;
+		int thirdLineRoadCount = 0;
 		for (int i = 0; i < 18; i++) {
 			// 1st line Tiles
+			if (i%3 == 0) {
+				builds.get(1).get(i).addTileNeighbor(tiles.get(1).get(((firstLineTileCount++)+6)%6));
+				builds.get(1).get(i).addTileNeighbor(tiles.get(1).get(firstLineTileCount));
+				builds.get(1).get(i+1).addTileNeighbor(tiles.get(1).get(firstLineTileCount));
+				builds.get(1).get(i+2).addTileNeighbor(tiles.get(1).get(firstLineTileCount));
+			}
 			// 2nd line Tiles
+			if (i%3 == 0) {
+				builds.get(1).get(i).addTileNeighbor(tiles.get(2).get((secondLineTileCount+12)%12));
+			} else {
+				builds.get(1).get(i).addTileNeighbor(tiles.get(2).get(((secondLineTileCount++)+12)%12));
+				builds.get(1).get(i).addTileNeighbor(tiles.get(2).get((secondLineTileCount+12)%12));
+			}
 			
+			// 0th line Builds
+			if (i%3 == 0) {
+				builds.get(1).get(i).addBuildNeighbor(builds.get(0).get(zerothLineBuildCount++));
+			}
 			// 1st line Builds
+			builds.get(1).get(i).addBuildNeighbor(builds.get(1).get((firstLineBuildCount+17)%18));
+			builds.get(1).get(i).addBuildNeighbor(builds.get(1).get(((firstLineBuildCount++)+19)%18));
 			// 2nd line Builds
+			if (i%3!=3) {
+				if (buildFlip) {
+					builds.get(1).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
+					secondLineBuildCount+=3;
+					buildFlip = !buildFlip;
+				} else {
+					builds.get(1).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
+					secondLineBuildCount+=2;
+					buildFlip = !buildFlip;
+				}
+			}
 			
 			// 1st line Roads
+			if (i%3==0) {
+				builds.get(1).get(i).addRoadNeighbor(roads.get(1).get(firstLineRoadCount++));
+			}
 			// 2nd line Roads
+			builds.get(1).get(i).addRoadNeighbor(roads.get(2).get((i+16)%18));
+			builds.get(1).get(i).addRoadNeighbor(roads.get(2).get((i+17)%18));
 			// 3rd line Roads
+			if (i%3!=0) {
+				builds.get(1).get(i).addRoadNeighbor(roads.get(2).get(thirdLineRoadCount++));
+			}
 		}
 		
 		// 2nd line Builds
+		secondLineTileCount = -1;
+		firstLineBuildCount = 1;
+		thirdLineRoadCount = 0;
+		for (int i = 0; i < 30; i++) {
+			// 2nd line Tiles
+			if (i%5 == 0) {
+				builds.get(2).get(i).addTileNeighbor(tiles.get(2).get(((secondLineTileCount++)+12)%12));
+				builds.get(2).get(i).addTileNeighbor(tiles.get(2).get((secondLineTileCount+12)%12));
+				builds.get(2).get(i+1).addTileNeighbor(tiles.get(2).get((secondLineTileCount+12)%12));
+				builds.get(2).get(i+2).addTileNeighbor(tiles.get(2).get((secondLineTileCount+12)%12));
+				builds.get(2).get(i+3).addTileNeighbor(tiles.get(2).get(((secondLineTileCount++)+12)%12));
+				builds.get(2).get(i+3).addTileNeighbor(tiles.get(2).get((secondLineTileCount+12)%12));
+				builds.get(2).get(i+4).addTileNeighbor(tiles.get(2).get((secondLineTileCount+12)%12));
+			}
+			
+			// 1st line Builds
+			if (i%5 == 0) {
+				builds.get(2).get(i).addBuildNeighbor(builds.get(1).get(firstLineBuildCount++));
+				builds.get(2).get(i+3).addBuildNeighbor(builds.get(1).get(firstLineBuildCount));
+			}
+			// 2nd line Builds
+			builds.get(2).get(i).addBuildNeighbor(builds.get(2).get((i+29)%30));
+			builds.get(2).get(i).addBuildNeighbor(builds.get(2).get((i+31)%30));
+			
+			// 3rd line Roads
+			if (i%5 == 0) {
+				builds.get(2).get(i).addRoadNeighbor(roads.get(3).get(thirdLineRoadCount++));
+				builds.get(2).get(i+3).addRoadNeighbor(roads.get(3).get(thirdLineRoadCount++));
+			}
+			// 4th line Roads
+			builds.get(2).get(i).addRoadNeighbor(roads.get(4).get((i+28)%30));
+			builds.get(2).get(i).addRoadNeighbor(roads.get(4).get((i+29)%30));
+		}
+	}
+	
+	public void linkRoads()	{
+		// 0th line Roads
+		for (int i = 0; i < 6; i++) {
+			// 0th line Tile
+			roads.get(0).get(i).addTileNeighbor(tiles.get(0).get(0));
+			// 1st line Tile
+			roads.get(0).get(i).addTileNeighbor(tiles.get(1).get(i));
+			
+			// 0th line Build
+			roads.get(0).get(i).addBuildNeighbor(builds.get(0).get((i+6)%6));
+			roads.get(0).get(i).addBuildNeighbor(builds.get(0).get((i+7)%6));
+		}
+		
+		// 1st line Roads
+		int firstLineBuildCount = 0;
+		for (int i = 0; i < 6; i++) {
+			// 1st line Tile
+			roads.get(1).get(i).addTileNeighbor(tiles.get(1).get((i+5)%6));
+			roads.get(1).get(i).addTileNeighbor(tiles.get(1).get((i+6)%6));
+			
+			// 0th line Build
+			roads.get(1).get(i).addBuildNeighbor(builds.get(0).get(i));
+			// 1st line Build
+			roads.get(1).get(i).addBuildNeighbor(builds.get(1).get(firstLineBuildCount));
+			firstLineBuildCount+=3;
+		}
+		
+		// 2nd line Roads
+		int firstLineTileCount = 0;
+		int secondLineTileCount = 0;
+		for (int i = 0; i < 18; i++) {
+			// 1st line Tiles
+			if (i%3 == 0) {
+				roads.get(2).get((i+17)%18).addTileNeighbor(tiles.get(1).get(firstLineTileCount));
+				roads.get(2).get((i+18)%18).addTileNeighbor(tiles.get(1).get(firstLineTileCount));
+				roads.get(2).get((i+19)%18).addTileNeighbor(tiles.get(1).get(firstLineTileCount++));
+			}
+			// 2nd line Tiles
+			if (i%3 == 0) {
+				roads.get(2).get(i).addTileNeighbor(tiles.get(2).get(secondLineTileCount++));
+				roads.get(2).get(i+1).addTileNeighbor(tiles.get(2).get(secondLineTileCount));
+				roads.get(2).get(i+2).addTileNeighbor(tiles.get(2).get(secondLineTileCount++));
+			}
+			// 1st line Builds
+			roads.get(2).get(i).addBuildNeighbor(builds.get(1).get((i+19)%18));
+			roads.get(2).get(i).addBuildNeighbor(builds.get(1).get((i+20)%18));
+		}
+		
+		// 3rd line Roads
+		firstLineBuildCount = 1;
+		int secondLineBuildCount = 0;
+		for (int i = 0; i < 12; i++) {
+			// 2nd line Tiles
+			roads.get(3).get(i).addTileNeighbor(tiles.get(2).get((i+11)%12));
+			roads.get(3).get(i).addTileNeighbor(tiles.get(2).get((i+12)%12));
+			
+			// 1st line Builds
+			if (i%2 == 0) {
+				roads.get(3).get(i).addBuildNeighbor(builds.get(1).get(firstLineBuildCount++));
+				roads.get(3).get(i+1).addBuildNeighbor(builds.get(1).get(firstLineBuildCount));
+				firstLineBuildCount+=2;
+			}
+			// 2nd line Builds
+			if (i%2 == 0) {
+				roads.get(3).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
+				roads.get(3).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
+			}
+		}
+		
+		// 4th line Roads
+		
 	}
 	
 	/*
