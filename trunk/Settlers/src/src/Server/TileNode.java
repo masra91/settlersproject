@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TileNode implements Node {
 	
@@ -9,8 +10,12 @@ public class TileNode implements Node {
 	private ArrayList<TileNode> tileNeighbors;
 	private ArrayList<BuildNode> buildNeighbors;
 	private ArrayList<RoadNode> roadNeighbors;
+	private int i;
+	private int j;
 	
-	public TileNode(byte type, byte rollValue, byte portType) {
+	public TileNode(byte type, byte rollValue, byte portType, int i, int j) {
+		this.i = i;
+		this.j = j;
 		this.type = type;
 		this.portType = portType;
 		this.rollValue = rollValue;
@@ -21,6 +26,18 @@ public class TileNode implements Node {
 			this.robber = true;
 		else
 			this.robber = false;
+	}
+	
+	public Iterator<TileNode> getTileNeighbors() {
+		return tileNeighbors.iterator();
+	}
+	
+	public Iterator<BuildNode> getBuildNeighbors() {
+		return buildNeighbors.iterator();
+	}
+	
+	public Iterator<RoadNode> getRoadNeighbors() {
+		return roadNeighbors.iterator();
 	}
 	
 	// Methods on robber
@@ -65,6 +82,10 @@ public class TileNode implements Node {
 	}
 	public boolean hasRoadNeighbor(RoadNode roadNeighbor) {
 		return roadNeighbors.contains(roadNeighbor);
+	}
+	
+	public String toString() {
+		return "(" + i + ", " + j + ")";
 	}
 	
 	

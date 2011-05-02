@@ -1,6 +1,7 @@
 package Server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BuildNode implements Node {
 	
@@ -9,13 +10,29 @@ public class BuildNode implements Node {
 	private ArrayList<TileNode> tileNeighbors;
 	private ArrayList<BuildNode> buildNeighbors;
 	private ArrayList<RoadNode> roadNeighbors;
+	private int i;
+	private int j;
 	
-	public BuildNode() {
+	public BuildNode(int i, int j) {
 		tileNeighbors = new ArrayList<TileNode>(3);
 		buildNeighbors = new ArrayList<BuildNode>(3);
 		roadNeighbors = new ArrayList<RoadNode>(3);
 		this.owner = 0;
 		this.type = 0;
+		this.i = i;
+		this.j = j;
+	}
+	
+	public Iterator<TileNode> getTileNeighbors() {
+		return tileNeighbors.iterator();
+	}
+	
+	public Iterator<BuildNode> getBuildNeighbors() {
+		return buildNeighbors.iterator();
+	}
+	
+	public Iterator<RoadNode> getRoadNeighbors() {
+		return roadNeighbors.iterator();
 	}
 	
 	// Methods on owner
@@ -62,6 +79,10 @@ public class BuildNode implements Node {
 	}
 	public boolean hasRoadNeighbor(RoadNode roadNeighbor) {
 		return roadNeighbors.contains(roadNeighbor);
+	}
+	
+	public String toString() {
+		return "(" + i + ", " + j + ")";
 	}
 	
 }
