@@ -20,6 +20,30 @@ public class Graph {
 		linkRoads();
 	}
 	
+	public TileNode getTileNode(int i, int j) {
+		try {
+			return tiles.get(i).get(j);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+	
+	public BuildNode getBuildNode(int i, int j) {
+		try {
+			return builds.get(i).get(j);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+	
+	public RoadNode getRoadNode(int i, int j) {
+		try {
+			return roads.get(i).get(j);
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+	
 	private void makeTiles() {
 		// These lists serve to randomize the tile values.
 		LinkedList<Integer> tileTypes = buildTileTypes();
@@ -30,18 +54,18 @@ public class Graph {
 		tiles.add(new ArrayList<TileNode>(6));
 		tiles.add(new ArrayList<TileNode>(12));
 		tiles.add(new ArrayList<TileNode>(18));
-		tiles.get(0).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0));
+		tiles.get(0).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 0, 0));
 		for (int i = 0; i < 6; i++) {
-			tiles.get(1).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0));
+			tiles.get(1).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 1, i));
 		}
 		for (int i = 0; i < 12; i++	) {
-			tiles.get(2).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0));
+			tiles.get(2).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 2, i));
 		}
 		for (int i = 0; i < 18; i++) {
 			if (i%2 != 0)
-				tiles.get(3).add(new TileNode((byte)0, (byte)0, portTypes.pop().byteValue()));
+				tiles.get(3).add(new TileNode((byte)0, (byte)0, portTypes.pop().byteValue(), 3, i));
 			else
-				tiles.get(3).add(new TileNode((byte)0, (byte)0, (byte)0));
+				tiles.get(3).add(new TileNode((byte)0, (byte)0, (byte)0, 3, i));
 		}
 	}
 	
@@ -51,13 +75,13 @@ public class Graph {
 		builds.add(new ArrayList<BuildNode>(18));
 		builds.add(new ArrayList<BuildNode>(30));
 		for (int i = 0; i < 6; i++) {
-			builds.get(0).add(new BuildNode());
+			builds.get(0).add(new BuildNode(0, i));
 		}
 		for (int i = 0; i < 18; i++) {
-			builds.get(1).add(new BuildNode());
+			builds.get(1).add(new BuildNode(1, i));
 		}
 		for (int i = 0; i < 30; i++) {
-			builds.get(2).add(new BuildNode());
+			builds.get(2).add(new BuildNode(2, i));
 		}
 	}
 	
@@ -69,17 +93,17 @@ public class Graph {
 		roads.add(new ArrayList<RoadNode>(12));
 		roads.add(new ArrayList<RoadNode>(30));
 		for(int i = 0; i < 6; i++) {
-			roads.get(0).add(new RoadNode());
-			roads.get(1).add(new RoadNode());
+			roads.get(0).add(new RoadNode(0, i));
+			roads.get(1).add(new RoadNode(1, i));
 		}
 		for (int i = 0; i < 18; i++) {
-			roads.get(2).add(new RoadNode());
+			roads.get(2).add(new RoadNode(2, i));
 		}
 		for (int i = 0; i < 12; i++) {
-			roads.get(3).add(new RoadNode());
+			roads.get(3).add(new RoadNode(3, i));
 		}
 		for(int i = 0; i < 30; i++) {
-			roads.get(4).add(new RoadNode());
+			roads.get(4).add(new RoadNode(4, i));
 		}
 	}
 	
@@ -104,6 +128,9 @@ public class Graph {
 		for (int i = 0; i < 6; i++) {
 			// Tiles from the 0th line
 			tiles.get(1).get(i).addTileNeighbor(tiles.get(0).get(0));
+			// Tiles from the 1st line
+			tiles.get(1).get(i).addTileNeighbor(tiles.get(1).get((i+5)%6));
+			tiles.get(1).get(i).addTileNeighbor(tiles.get(1).get((i+7)%6));
 			// Tiles from the 2nd line
 			tiles.get(1).get(i).addTileNeighbor(tiles.get(2).get(((secondTileLineCount++)+12)%12));
 			tiles.get(1).get(i).addTileNeighbor(tiles.get(2).get(((secondTileLineCount++)+12)%12));
@@ -139,11 +166,14 @@ public class Graph {
 		for (int i = 0; i < 12; i++) {
 			// Tiles from the 1st line
 			if (i%2 == 0) {
-				tiles.get(2).get(i).addTileNeighbor(tiles.get(1).get(firstTileLineCount++));
+				tiles.get(2).get(i).addTileNeighbor(tiles.get(1).get(firstTileLineCount));
 			} else {
 				tiles.get(2).get(i).addTileNeighbor(tiles.get(1).get(firstTileLineCount++));
-				tiles.get(2).get(i).addTileNeighbor(tiles.get(1).get(firstTileLineCount++));
+				tiles.get(2).get(i).addTileNeighbor(tiles.get(1).get((firstTileLineCount+6)%6));
 			}
+			// Tiles from the 2nd line
+			tiles.get(2).get(i).addTileNeighbor(tiles.get(2).get((i+11)%12));
+			tiles.get(2).get(i).addTileNeighbor(tiles.get(2).get((i+13)%12));
 			
 			// Builds from the 1st line
 			if (i%2 == 0) {
@@ -222,7 +252,7 @@ public class Graph {
 		int zerothLineBuildCount = 0;
 		firstLineBuildCount = 0;
 		boolean buildFlip = true;
-		int secondLineBuildCount = 1;
+		int secondLineBuildCount = 0;
 		int firstLineRoadCount = 0;
 		int thirdLineRoadCount = 0;
 		for (int i = 0; i < 18; i++) {
@@ -249,7 +279,7 @@ public class Graph {
 			builds.get(1).get(i).addBuildNeighbor(builds.get(1).get((firstLineBuildCount+17)%18));
 			builds.get(1).get(i).addBuildNeighbor(builds.get(1).get(((firstLineBuildCount++)+19)%18));
 			// 2nd line Builds
-			if (i%3!=3) {
+			if (i%3!=0) {
 				if (buildFlip) {
 					builds.get(1).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
 					secondLineBuildCount+=3;
@@ -294,6 +324,7 @@ public class Graph {
 			if (i%5 == 0) {
 				builds.get(2).get(i).addBuildNeighbor(builds.get(1).get(firstLineBuildCount++));
 				builds.get(2).get(i+3).addBuildNeighbor(builds.get(1).get(firstLineBuildCount));
+				firstLineBuildCount+=2;
 			}
 			// 2nd line Builds
 			builds.get(2).get(i).addBuildNeighbor(builds.get(2).get((i+29)%30));
@@ -310,6 +341,7 @@ public class Graph {
 		}
 	}
 	
+	// Iterates over every road node and adds pointers to the appropriate nodes.
 	public void linkRoads()	{
 		// 0th line Roads
 		for (int i = 0; i < 6; i++) {
@@ -376,7 +408,7 @@ public class Graph {
 			if (i%2 == 0) {
 				roads.get(3).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
 				secondLineBuildCount+=3;
-				roads.get(3).get(i).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
+				roads.get(3).get(i+1).addBuildNeighbor(builds.get(2).get(secondLineBuildCount));
 				secondLineBuildCount+=2;
 			}
 		}
