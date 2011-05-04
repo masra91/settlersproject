@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class GraphTester {
-	
+
 	private static Graph g;
 
 	/**
@@ -12,32 +12,33 @@ public class GraphTester {
 	 */
 	public static void main(String[] args) {
 		g = new Graph();
-		testTiles();
-		testBuilds();
-		testRoads();
-		testValues();
+				testTiles();
+				testBuilds();
+				testRoads();
+				testValues();
+		testForRandomValues();
 	}
-	
+
 	private static void testTiles() {
-		
+
 		for (ArrayList<TileNode> list : g.tiles) {
 			for (TileNode node : list) {
 				System.out.println("On Tile " + node.toString() + ":");
-				
+
 				Iterator<TileNode> tileIt = node.getTileNeighbors();
 				System.out.print("Tiles ");
 				while(tileIt.hasNext()) {
 					System.out.print(tileIt.next().toString() + " ");
 				}
 				System.out.println();
-				
+
 				Iterator<BuildNode> buildIt = node.getBuildNeighbors();
 				System.out.print("Builds ");
 				while(buildIt.hasNext()) {
 					System.out.print(buildIt.next().toString() + " ");
 				}
 				System.out.println();
-				
+
 				Iterator<RoadNode> nodeIt = node.getRoadNeighbors();
 				System.out.print("Roads ");
 				while (nodeIt.hasNext()) {
@@ -45,32 +46,32 @@ public class GraphTester {
 				}
 				System.out.println();
 				System.out.println();
-				
+
 			}
 		}
-	
+
 	}
-	
+
 	private static void testBuilds() {
-		
+
 		for (ArrayList<BuildNode> buildList : g.builds) {
 			for (BuildNode build : buildList) {
 				System.out.println("On build " + build.toString() + ":");
-				
+
 				Iterator<TileNode> tileIt = build.getTileNeighbors();
 				System.out.print("Tiles ");
 				while (tileIt.hasNext()) {
 					System.out.print(tileIt.next().toString() + " ");
 				}
 				System.out.println();
-				
+
 				Iterator<BuildNode> buildIt = build.getBuildNeighbors();	
 				System.out.print("Builds ");
 				while (buildIt.hasNext()) {
 					System.out.print(buildIt.next().toString() + " ");
 				}
 				System.out.println();
-				
+
 				Iterator<RoadNode> roadIt = build.getRoadNeighbors();
 				System.out.print("Roads ");
 				while (roadIt.hasNext()) {
@@ -78,26 +79,26 @@ public class GraphTester {
 				}
 				System.out.println();
 				System.out.println();
-				
-				
+
+
 			}
 		}
-		
+
 	}
-	
+
 	private static void testRoads() {
-		
+
 		for (ArrayList<RoadNode> roadList : g.roads) {
 			for (RoadNode road : roadList) {
 				System.out.println("On Road " + road.toString());
-				
+
 				Iterator<TileNode> tileIt = road.getTileNeighbors();
 				System.out.print("Tiles ");
 				while (tileIt.hasNext()) {
 					System.out.print(tileIt.next().toString() + " ");
 				}
 				System.out.println();
-				
+
 				Iterator<BuildNode> buildIt = road.getBuildNeighbors();
 				System.out.print("Builds ");
 				while (buildIt.hasNext()) {
@@ -105,14 +106,14 @@ public class GraphTester {
 				}
 				System.out.println();
 				System.out.println();
-				
+
 			}
 		}
-		
+
 	}
-	
+
 	private static void testValues() {
-	
+
 		for (int i = 0; i < 10; i++) {
 			int[] tileTypes = new int[7];
 			int[] rollValues = new int[13];
@@ -142,21 +143,48 @@ public class GraphTester {
 			System.out.println();
 			System.out.println();
 		}
-		
+
 	}
-	
+
+	private static void testForRandomValues() {
+		
+		String top = "";
+		String bottom = "";
+
+		for (int outer = 0; outer < 20; outer++) {
+
+			Graph graph = new Graph();
+
+			for (ArrayList<TileNode> tileList : graph.tiles) {
+				for (TileNode tile : tileList) {
+					if (tile.type() != 0) {
+						top += tile.type() + " ";
+						bottom += tile.rollValue() + " ";
+					}
+				}	
+			}
+			top += "\n";
+			bottom += "\n";
+		}
+		
+		System.out.println(top);
+		System.out.println(bottom);
+		System.out.println();
+
+	}
+
 	/* Old Code
 	private static void testTiles() {
 		Iterator<TileNode> tileit;
 		Iterator<BuildNode> buildit;
 		Iterator<RoadNode> roadit;
-		
+
 		// 0th Tile
 		tileit = g.getTileNode(0, 0).getTileNeighbors();
 		buildit = g.getTileNode(0, 0).getBuildNeighbors();
 		roadit = g.getTileNode(0, 0).getRoadNeighbors();
 		printTiles(tileit, buildit, roadit, 0, 0);
-		
+
 		// 1st Tiles
 		for (int i = 0; i < 6; i++) {
 			tileit = g.getTileNode(1, i).getTileNeighbors();
@@ -164,7 +192,7 @@ public class GraphTester {
 			roadit = g.getTileNode(1, i).getRoadNeighbors();
 			printTiles(tileit, buildit, roadit, 1, i);
 		}
-		
+
 		// 2nd Tiles
 		for (int i = 0; i < 12; i++) {
 			tileit = g.getTileNode(2, i).getTileNeighbors();
@@ -192,12 +220,12 @@ public class GraphTester {
 		}
 		System.out.println();System.out.println();
 	}
-	
+
 	private static void testBuilds() {
 		Iterator<TileNode> tileit;
 		Iterator<BuildNode> buildit;
 		Iterator<RoadNode> roadit;
-		
+
 		// 0th line Builds
 		for (int i = 0; i < 6; i++) {
 			tileit = g.getBuildNode(0, i).getTileNeighbors();
@@ -220,7 +248,7 @@ public class GraphTester {
 			printBuilds(tileit, buildit, roadit, 2, i);
 		}
 	}
-	
+
 	private static void printBuilds(Iterator<TileNode> tileit, Iterator<BuildNode> buildit, Iterator<RoadNode> roadit, int i, int j) {
 		System.out.println("On Build " + g.getBuildNode(i, j) + ":");
 		System.out.print("Tiles: ");
@@ -238,7 +266,7 @@ public class GraphTester {
 		System.out.println();
 		System.out.println();
 	}
-	
+
 	private static void testRoads() {
 		Iterator<TileNode> tiles;
 		Iterator<BuildNode> builds;
@@ -273,7 +301,7 @@ public class GraphTester {
 			printRoads(tiles, builds, 4, i);
 		}
 	}
-		
+
 	private static void printRoads(Iterator<TileNode> tileit, Iterator<BuildNode> buildit, int i, int j) {
 		System.out.println("On Road " + g.getRoadNode(i, j) + ":");
 		System.out.print("Tiles: ");
@@ -287,6 +315,6 @@ public class GraphTester {
 		}
 		System.out.println();System.out.println();
 	}
-	*/
-	
+	 */
+
 }
