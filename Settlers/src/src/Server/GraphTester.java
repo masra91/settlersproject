@@ -12,9 +12,10 @@ public class GraphTester {
 	 */
 	public static void main(String[] args) {
 		g = new Graph();
-		testTiles();
+		//testTiles();
 		//testBuilds();
 		//testRoads();
+		testValues();
 	}
 	
 	private static void testTiles() {
@@ -48,6 +49,97 @@ public class GraphTester {
 			}
 		}
 	
+	}
+	
+	private static void testBuilds() {
+		
+		for (ArrayList<BuildNode> buildList : g.builds) {
+			for (BuildNode build : buildList) {
+				System.out.println("On build " + build.toString() + ":");
+				
+				Iterator<TileNode> tileIt = build.getTileNeighbors();
+				System.out.print("Tiles ");
+				while (tileIt.hasNext()) {
+					System.out.print(tileIt.next().toString() + " ");
+				}
+				System.out.println();
+				
+				Iterator<BuildNode> buildIt = build.getBuildNeighbors();	
+				System.out.print("Builds ");
+				while (buildIt.hasNext()) {
+					System.out.print(buildIt.next().toString() + " ");
+				}
+				System.out.println();
+				
+				Iterator<RoadNode> roadIt = build.getRoadNeighbors();
+				System.out.print("Roads ");
+				while (roadIt.hasNext()) {
+					System.out.print(roadIt.next() + " ");
+				}
+				System.out.println();
+				System.out.println();
+				
+				
+			}
+		}
+		
+	}
+	
+	private static void testRoads() {
+		
+		for (ArrayList<RoadNode> roadList : g.roads) {
+			for (RoadNode road : roadList) {
+				System.out.println("On Road " + road.toString());
+				
+				Iterator<TileNode> tileIt = road.getTileNeighbors();
+				System.out.print("Tiles ");
+				while (tileIt.hasNext()) {
+					System.out.print(tileIt.next().toString() + " ");
+				}
+				System.out.println();
+				
+				Iterator<BuildNode> buildIt = road.getBuildNeighbors();
+				System.out.print("Builds ");
+				while (buildIt.hasNext()) {
+					System.out.print(buildIt.next().toString() + " ");
+				}
+				System.out.println();
+				System.out.println();
+				
+			}
+		}
+		
+	}
+	
+	private static void testValues() {
+	
+		for (int i = 0; i < 10; i++) {
+			int[] tileTypes = new int[7];
+			int[] rollValues = new int[13];
+			for (int j = 0; j < tileTypes.length; j++) {
+				tileTypes[j] = 0;
+			}
+			for (int j = 0; j < rollValues.length; j++) {
+				rollValues[j] = 0;
+			}
+			Graph graph = new Graph();
+			for (ArrayList<TileNode> tileList : graph.tiles) {
+				for (TileNode tile : tileList) {
+					tileTypes[tile.type()]++;
+					rollValues[tile.rollValue()]++;
+				}
+			}
+			for (int j = 0; j < tileTypes.length; j++) {
+				System.out.print(tileTypes[j] + " ");
+			}
+			System.out.println();
+			for (int j = 0; j < rollValues.length; j++) {
+				System.out.print(rollValues[j] + " ");
+			}
+			System.out.println();
+			System.out.println();
+		}
+		
 	}
 	
 	/* Old Code
