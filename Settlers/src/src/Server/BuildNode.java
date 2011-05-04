@@ -68,6 +68,7 @@ public class BuildNode implements Node {
 	}
 	public void addRoadNeighbor(RoadNode roadNeighbor) {
 		roadNeighbors.add(roadNeighbor);
+		roadNeighbor.addBuildNeighbor(this);
 	}
 	
 	// Used to check if the node has neighbors.
