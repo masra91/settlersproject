@@ -1,5 +1,6 @@
 package Server;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class GraphTester {
@@ -12,10 +13,44 @@ public class GraphTester {
 	public static void main(String[] args) {
 		g = new Graph();
 		testTiles();
-		testBuilds();
-		testRoads();
+		//testBuilds();
+		//testRoads();
 	}
 	
+	private static void testTiles() {
+		
+		for (ArrayList<TileNode> list : g.tiles) {
+			for (TileNode node : list) {
+				System.out.println("On Tile " + node.toString() + ":");
+				
+				Iterator<TileNode> tileIt = node.getTileNeighbors();
+				System.out.print("Tiles ");
+				while(tileIt.hasNext()) {
+					System.out.print(tileIt.next().toString() + " ");
+				}
+				System.out.println();
+				
+				Iterator<BuildNode> buildIt = node.getBuildNeighbors();
+				System.out.print("Builds ");
+				while(buildIt.hasNext()) {
+					System.out.print(buildIt.next().toString() + " ");
+				}
+				System.out.println();
+				
+				Iterator<RoadNode> nodeIt = node.getRoadNeighbors();
+				System.out.print("Roads ");
+				while (nodeIt.hasNext()) {
+					System.out.print(nodeIt.next().toString() + " ");
+				}
+				System.out.println();
+				System.out.println();
+				
+			}
+		}
+	
+	}
+	
+	/* Old Code
 	private static void testTiles() {
 		Iterator<TileNode> tileit;
 		Iterator<BuildNode> buildit;
@@ -157,5 +192,6 @@ public class GraphTester {
 		}
 		System.out.println();System.out.println();
 	}
+	*/
 	
 }

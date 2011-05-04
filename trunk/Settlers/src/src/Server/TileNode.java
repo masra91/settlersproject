@@ -71,6 +71,7 @@ public class TileNode implements Node {
 	}
 	public void addRoadNeighbor(RoadNode roadNeighbor) {
 		roadNeighbors.add(roadNeighbor);
+		roadNeighbor.addTileNeighbor(this);
 	}
 	
 	// Used to check if the node has neighbors
