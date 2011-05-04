@@ -12,9 +12,9 @@ public class GraphTester {
 	 */
 	public static void main(String[] args) {
 		g = new Graph();
-		//testTiles();
-		//testBuilds();
-		//testRoads();
+		testTiles();
+		testBuilds();
+		testRoads();
 		testValues();
 	}
 	
@@ -122,13 +122,16 @@ public class GraphTester {
 			for (int j = 0; j < rollValues.length; j++) {
 				rollValues[j] = 0;
 			}
+			int counter = 0;
 			Graph graph = new Graph();
 			for (ArrayList<TileNode> tileList : graph.tiles) {
 				for (TileNode tile : tileList) {
+					counter++;
 					tileTypes[tile.type()]++;
 					rollValues[tile.rollValue()]++;
 				}
 			}
+			System.out.println(counter);
 			for (int j = 0; j < tileTypes.length; j++) {
 				System.out.print(tileTypes[j] + " ");
 			}
