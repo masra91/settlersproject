@@ -318,9 +318,9 @@ public class Graph {
 			tile.addBuildNeighbor(builds.get(4).get(fourthRowBuilds++));
 			tile.addBuildNeighbor(builds.get(4).get(fourthRowBuilds));
 			// 5th row Builds
-			tile.addBuildNeighbor(builds.get(4).get(fifthRowBuilds++));
-			tile.addBuildNeighbor(builds.get(4).get(fifthRowBuilds++));
-			tile.addBuildNeighbor(builds.get(4).get(fifthRowBuilds));
+			tile.addBuildNeighbor(builds.get(5).get(fifthRowBuilds++));
+			tile.addBuildNeighbor(builds.get(5).get(fifthRowBuilds++));
+			tile.addBuildNeighbor(builds.get(5).get(fifthRowBuilds));
 
 			// 8th row Roads
 			tile.addRoadNeighbor(roads.get(8).get(eighthRowRoads++));
@@ -448,9 +448,9 @@ public class Graph {
 				tileTypes.add(5);
 				tileTypes.add(6);
 			}
-			tileTypes.add(1);
 			tileTypes.add(2);
 			tileTypes.add(3);
+			tileTypes.add(4);
 		}
 		tileTypes.add(1);
 		Collections.shuffle(tileTypes);
