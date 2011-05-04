@@ -38,6 +38,8 @@ public class Graph {
 		tiles.add(new ArrayList<TileNode>(6));
 		tiles.add(new ArrayList<TileNode>(5));
 		tiles.add(new ArrayList<TileNode>(4));
+		Integer type;
+		byte roll;
 		// Top water
 		for (int i = 0; i < 4; i++) {
 			tiles.get(0).add(new TileNode((byte)0, (byte)0, (byte)0, 0, i));
@@ -52,23 +54,48 @@ public class Graph {
 		}
 		// First row
 		for (int i = 1; i <= 3; i++) {
-			tiles.get(1).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 1, i));
+			type = tileTypes.pop();
+			if (type != 1)
+				roll = rollValues.pop().byteValue();
+			else
+				roll = 0;
+			tiles.get(1).add(new TileNode(type.byteValue(), roll, (byte)0, 1, i));
 		}
 		// Second row
 		for (int i = 1; i <= 4; i++) {
-			tiles.get(2).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 2, i));
+			type = tileTypes.pop();
+			if (type != 1)
+				roll = rollValues.pop().byteValue();
+			else
+				roll = 0;
+			tiles.get(2).add(new TileNode(type.byteValue(), roll, (byte)0, 2, i));
 		}
 		// Third row
 		for (int i = 1; i <= 5; i++) {
-			tiles.get(3).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 3, i));
+			type = tileTypes.pop();
+			if (type != 1)
+				roll = rollValues.pop().byteValue();
+			else
+				roll = 0;
+			tiles.get(3).add(new TileNode(type.byteValue(), roll, (byte)0, 3, i));
 		}
 		// Fourth row
 		for (int i = 1; i <= 4; i++) {
-			tiles.get(4).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 4, i));
+			type = tileTypes.pop();
+			if (type != 1)
+				roll = rollValues.pop().byteValue();
+			else
+				roll = 0;
+			tiles.get(4).add(new TileNode(type.byteValue(), roll, (byte)0, 4, i));
 		}
 		// Fifth row
 		for (int i = 1; i <= 3; i++) {
-			tiles.get(5).add(new TileNode(tileTypes.pop().byteValue(), rollValues.pop().byteValue(), (byte)0, 5, i));
+			type = tileTypes.pop();
+			if (type != 1)
+				roll = rollValues.pop().byteValue();
+			else
+				roll = 0;
+			tiles.get(5).add(new TileNode(type.byteValue(), roll, (byte)0, 5, i));
 		}
 		// Right side water
 		for (int i = 1; i <=5; i++) {
@@ -437,7 +464,7 @@ public class Graph {
 
 	/*
 	 * Builds a list of tile types and shuffles it.
-	 * 4 of 1, 2, 3
+	 * 4 of 2, 3, 4
 	 * 3 of 5, 6
 	 * 1 of 1
 	 */
@@ -461,15 +488,17 @@ public class Graph {
 	 * Builds a list of roll values and shuffles it. 
 	 * 1 of 2
 	 * 1 of 12
-	 * 2 of 3 through 11
+	 * 2 of 3 through 11 (excluding 7)
 	 */
 	private LinkedList<Integer> buildRollValues() {
 		LinkedList<Integer> rollValues = new LinkedList<Integer>();
 		rollValues.add(2);
 		rollValues.add(12);
 		for (int i = 3; i <= 11; i++) {
-			rollValues.add(i);
-			rollValues.add(i);
+			if (i != 7) {
+				rollValues.add(i);
+				rollValues.add(i);
+			}
 		}
 		Collections.shuffle(rollValues);
 		return rollValues;
